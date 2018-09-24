@@ -27,7 +27,7 @@ public class Docent implements Serializable{
 	
 	protected Docent() {
 		//Je maakt de default constructor protected in plaats van public als je liever hebt dat zo weinig mogelijk
-		//classes deze constructor kunnen gebruiken
+		//classes deze constructor kunnen gebruiken.
 	}
 	
 	public long getId() {
