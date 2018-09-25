@@ -7,4 +7,5 @@ import be.vdab.fietsacademy.entities.Docent;
 public interface DocentRepository {
 	public abstract Optional<Docent> read(long id);
 	public abstract void create(Docent docent);
+	public abstract void delete(long id);
 }

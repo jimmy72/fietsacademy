@@ -6,6 +6,8 @@ import static org.junit.Assert.assertNotEquals;
 
 import java.math.BigDecimal;
 
+import javax.persistence.EntityManager;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,6 +34,8 @@ public class JpaDocentRepositoryTest extends AbstractTransactionalJUnit4SpringCo
 	private JpaDocentRepository repository;
 	private static final String DOCENTEN = "docenten";
 	private Docent docent;
+	@Autowired
+	private EntityManager manager;
 	
 	@Before
 	public void before() {
@@ -75,6 +79,16 @@ public class JpaDocentRepositoryTest extends AbstractTransactionalJUnit4SpringCo
 		assertNotEquals(0, docent.getId()); //@GeneratedValue(strategy = GenerationType.IDENTITY) heeft id van docent ingevuld
 		assertEquals(1, super.countRowsInTableWhere(DOCENTEN, "id=" + docent.getId())); //where clausule als 2de parameter
 		
+	}
+	
+	@Test
+	public void delete() {
+		long id = idVanTestMan();
+		int aantalDocenten = super.countRowsInTable(DOCENTEN);
+		repository.delete(id);
+		manager.flush();
+		assertEquals(aantalDocenten - 1, super.countRowsInTable(DOCENTEN));
+		assertEquals(0, super.countRowsInTableWhere(DOCENTEN, "id=" + id));
 	}
 
 }
