@@ -2,6 +2,8 @@ package be.vdab.fietsacademy.entities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -78,6 +80,14 @@ public class Docent implements Serializable{
 
 	public void setGeslacht(Geslacht geslacht) {
 		this.geslacht = geslacht;
+	}
+	
+	public void opslag(BigDecimal percentage) {
+		if(percentage.compareTo(BigDecimal.ZERO) <= 0) {
+			throw new IllegalArgumentException();
+		}
+		BigDecimal factor = BigDecimal.ONE.add(percentage.divide(BigDecimal.valueOf(100)));
+		this.setWedde(this.getWedde().multiply(factor, new MathContext(2, RoundingMode.HALF_UP)));
 	}
 	
 }
