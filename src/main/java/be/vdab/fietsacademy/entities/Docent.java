@@ -6,6 +6,8 @@ import java.math.BigDecimal;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -17,6 +19,7 @@ public class Docent implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String voornaam;
 	private String familienaam;
@@ -28,6 +31,14 @@ public class Docent implements Serializable{
 	protected Docent() {
 		//Je maakt de default constructor protected in plaats van public als je liever hebt dat zo weinig mogelijk
 		//classes deze constructor kunnen gebruiken.
+	}
+	
+	public Docent(String voornaam, String familienaam, BigDecimal wedde, String emailAdres, Geslacht geslacht) {
+		this.voornaam = voornaam;
+		this.familienaam = familienaam;
+		this.wedde = wedde;
+		this.emailAdres = emailAdres;
+		this.geslacht = geslacht;
 	}
 	
 	public long getId() {

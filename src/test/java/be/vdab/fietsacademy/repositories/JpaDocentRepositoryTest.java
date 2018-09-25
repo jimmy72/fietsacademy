@@ -2,7 +2,11 @@ package be.vdab.fietsacademy.repositories;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 
+import java.math.BigDecimal;
+
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,13 @@ public class JpaDocentRepositoryTest extends AbstractTransactionalJUnit4SpringCo
 
 	@Autowired
 	private JpaDocentRepository repository;
+	private static final String DOCENTEN = "docenten";
+	private Docent docent;
+	
+	@Before
+	public void before() {
+		docent = new Docent("test", "test", BigDecimal.TEN, "test@fietsacademy.be", Geslacht.MAN);
+	}
 	
 	private long idVanTestMan() {
 		return super.jdbcTemplate.queryForObject("select id from docenten where voornaam = 'testM'", Long.class);
@@ -36,7 +47,7 @@ public class JpaDocentRepositoryTest extends AbstractTransactionalJUnit4SpringCo
 	}
 	@Test
 	public void read() {
-		Docent docent = repository.read(idVanTestMan()).get();
+		docent = repository.read(idVanTestMan()).get();
 		assertEquals("testM", docent.getVoornaam());
 		docent = repository.read(idVanTestVrouw()).get();
 		assertEquals("testV", docent.getVoornaam());
@@ -54,6 +65,16 @@ public class JpaDocentRepositoryTest extends AbstractTransactionalJUnit4SpringCo
 	@Test
 	public void vrouw() {
 		assertEquals(Geslacht.VROUW, repository.read(idVanTestVrouw()).get().getGeslacht());
+	}
+	
+	@Test
+	public void create() {
+		int aantalDocenten = super.countRowsInTable(DOCENTEN);
+		repository.create(docent); //docent = testdocent beschreven in @Before
+		assertEquals(aantalDocenten + 1, super.countRowsInTable(DOCENTEN));
+		assertNotEquals(0, docent.getId()); //@GeneratedValue(strategy = GenerationType.IDENTITY) heeft id van docent ingevuld
+		assertEquals(1, super.countRowsInTableWhere(DOCENTEN, "id=" + docent.getId())); //where clausule als 2de parameter
+		
 	}
 
 }
