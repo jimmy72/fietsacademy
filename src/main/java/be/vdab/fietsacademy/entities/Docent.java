@@ -18,9 +18,6 @@ import be.vdab.fietsacademy.enums.Geslacht;
 
 @Entity
 @Table(name = "docenten")
-@NamedQuery(name = "Docent.findByWeddeBetween",
-	query = "select d from Docent d where d.wedde between :van and :tot" +
-		" order by d.wedde, d.id")
 public class Docent implements Serializable{
 
 	private static final long serialVersionUID = 1L;
