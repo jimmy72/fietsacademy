@@ -3,8 +3,10 @@ package be.vdab.fietsacademy.repositories;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 
@@ -22,6 +24,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import be.vdab.fietsacademy.entities.Docent;
 import be.vdab.fietsacademy.enums.Geslacht;
+import be.vdab.fietsacademy.queryresults.AantalDocentenPerWedde;
+import be.vdab.fietsacademy.queryresults.IdEnEmailAdres;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -89,6 +93,61 @@ public class JpaDocentRepositoryTest extends AbstractTransactionalJUnit4SpringCo
 		manager.flush();
 		assertEquals(aantalDocenten - 1, super.countRowsInTable(DOCENTEN));
 		assertEquals(0, super.countRowsInTableWhere(DOCENTEN, "id=" + id));
+	}
+	
+	@Test
+	public void findAll() {
+		List<Docent> docenten = repository.findAll();
+		assertEquals(super.countRowsInTable(DOCENTEN), docenten.size());
+		BigDecimal vorigeWedde = BigDecimal.ZERO;
+		for (Docent docent : docenten) {
+			assertTrue(docent.getWedde().compareTo(vorigeWedde) >= 0);
+			vorigeWedde = docent.getWedde();
+		}
+	}
+	
+	@Test
+	public void findByWeddeBetween() {
+		BigDecimal duizend = BigDecimal.valueOf(1_000);
+		BigDecimal tweeduizend=BigDecimal.valueOf(2_000);
+		List<Docent> docenten = repository.findByWeddeBetween(duizend, tweeduizend);
+		long aantalDocenten = super.countRowsInTableWhere(DOCENTEN, "wedde between 1000 and 2000");
+		assertEquals(aantalDocenten, docenten.size());
+		docenten.forEach(docent -> {
+			assertTrue(docent.getWedde().compareTo(duizend) >= 0);
+			assertTrue(docent.getWedde().compareTo(tweeduizend) <= 0);
+		});
+	}
+	
+	@Test
+	public void findEmailAdressen() {
+		List<String> emailAdressen = repository.findEmailAdressen();
+		long aantal = super.jdbcTemplate.queryForObject("select count(distinct emailadres) from docenten", Long.class);
+		assertEquals(emailAdressen.size(), aantal);
+		emailAdressen.forEach(e ->
+				assertTrue(e.contains("@")));
+	}
+	
+	@Test
+	public void findIdsEnEmailAdressen() {
+		List<IdEnEmailAdres> idsEnEmailAdressen = repository.findIdsEnEmailAdressen();
+		assertEquals(super.countRowsInTable(DOCENTEN), idsEnEmailAdressen.size());
+	}
+	
+	@Test
+	public void findGrootsteWedde() {
+		BigDecimal grootste = repository.findGrootsteWedde();
+		BigDecimal grootste2 = super.jdbcTemplate.queryForObject(
+				"select max(wedde) from docenten", BigDecimal.class);
+		assertEquals(0, grootste.compareTo(grootste2));
+	}
+	
+	@Test
+	public void aantalDocentenPerWedde() {
+		List<AantalDocentenPerWedde> aantalDocentenPerWedde = repository.findAantalDocentenPerWedde();
+		long aantalUniekeWeddes = super.jdbcTemplate.queryForObject(
+				"select count(distinct wedde) from docenten", Long.class);
+		assertEquals(aantalDocentenPerWedde.size(), aantalUniekeWeddes);
 	}
 
 }
