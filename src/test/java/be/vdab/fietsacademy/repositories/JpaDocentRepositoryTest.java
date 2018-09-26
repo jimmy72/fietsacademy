@@ -149,5 +149,15 @@ public class JpaDocentRepositoryTest extends AbstractTransactionalJUnit4SpringCo
 				"select count(distinct wedde) from docenten", Long.class);
 		assertEquals(aantalDocentenPerWedde.size(), aantalUniekeWeddes);
 	}
+	
+	@Test
+	public void algemeneOpslag() {
+		int aantalGewijzigdeRecords = repository.algemeneOpslag(BigDecimal.valueOf(10));
+		assertEquals(super.countRowsInTable(DOCENTEN), aantalGewijzigdeRecords);
+		BigDecimal nieuweWedde = super.jdbcTemplate.queryForObject(
+				"select wedde from docenten where id=?", BigDecimal.class, idVanTestMan());
+		assertEquals(0, BigDecimal.valueOf(1_100).compareTo(nieuweWedde));
+				
+	}
 
 }

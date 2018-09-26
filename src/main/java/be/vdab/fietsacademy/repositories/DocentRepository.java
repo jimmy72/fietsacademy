@@ -18,4 +18,5 @@ public interface DocentRepository {
 	public abstract List<IdEnEmailAdres> findIdsEnEmailAdressen();
 	public abstract BigDecimal findGrootsteWedde();
 	public abstract List<AantalDocentenPerWedde> findAantalDocentenPerWedde();
+	public abstract int algemeneOpslag(BigDecimal percentage);
 }
