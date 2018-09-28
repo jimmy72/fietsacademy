@@ -14,7 +14,7 @@ public class GroepsCursus extends Cursus {
 	private LocalDate tot;
 	
 	protected GroepsCursus() {
-		
+		super();
 	}
 
 	public GroepsCursus(String naam, LocalDate van, LocalDate tot) {

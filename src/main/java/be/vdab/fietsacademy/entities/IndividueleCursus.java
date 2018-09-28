@@ -11,7 +11,7 @@ public class IndividueleCursus extends Cursus{
 	private int duurtijd;
 	
 	protected IndividueleCursus() {
-		
+		super();
 	}
 
 	public IndividueleCursus(String naam, int duurtijd) {
