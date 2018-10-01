@@ -13,10 +13,12 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import be.vdab.fietsacademy.entities.Campus;
 import be.vdab.fietsacademy.entities.Docent;
 import be.vdab.fietsacademy.enums.Geslacht;
 import be.vdab.fietsacademy.exceptions.DocentNietGevondenException;
 import be.vdab.fietsacademy.repositories.DocentRepository;
+import be.vdab.fietsacademy.valueobjects.Adres;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultDocentServiceTest {
@@ -24,10 +26,12 @@ public class DefaultDocentServiceTest {
 	@Mock
 	private DocentRepository repository;
 	private Docent docent;
+	private Campus campus;
 	
 	@Before
 	public void before() {
-		docent = new Docent("test", "test", BigDecimal.valueOf(100), "test@fietsacademy.be", Geslacht.MAN);
+		campus = new Campus("testcampus", new Adres("straat", "huisnr", "postcode", "gemeente"));
+		docent = new Docent("test", "test", BigDecimal.valueOf(100), "test@fietsacademy.be", Geslacht.MAN, campus);
 		when(repository.read(1)).thenReturn(Optional.of(docent));
 		when(repository.read(-1)).thenReturn(Optional.empty());
 		service = new DefaultDocentService(repository);

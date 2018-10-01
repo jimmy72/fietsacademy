@@ -10,15 +10,18 @@ import org.junit.Before;
 import org.junit.Test;
 
 import be.vdab.fietsacademy.enums.Geslacht;
+import be.vdab.fietsacademy.valueobjects.Adres;
 
 public class DocentTest {
 
 	private static final BigDecimal NORMALE_WEDDE = BigDecimal.valueOf(200);
 	private Docent docent1;
+	private Campus campus1;
 	
 	@Before
 	public void before() {
-		docent1 = new Docent("Jimmy", "Godin", NORMALE_WEDDE, "jimmy.godin@hotmail.com", Geslacht.MAN);
+		campus1 = new Campus("test", new Adres("test", "test", "test", "test"));
+		docent1 = new Docent("Jimmy", "Godin", NORMALE_WEDDE, "jimmy.godin@hotmail.com", Geslacht.MAN, campus1);
 	}
 
 	@Test

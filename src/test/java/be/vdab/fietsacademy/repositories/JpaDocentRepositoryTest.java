@@ -22,14 +22,17 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import be.vdab.fietsacademy.entities.Campus;
 import be.vdab.fietsacademy.entities.Docent;
 import be.vdab.fietsacademy.enums.Geslacht;
 import be.vdab.fietsacademy.queryresults.AantalDocentenPerWedde;
 import be.vdab.fietsacademy.queryresults.IdEnEmailAdres;
+import be.vdab.fietsacademy.valueobjects.Adres;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
+@Sql("/insertCampus.sql")
 @Sql("/insertDocent.sql")
 @Import(JpaDocentRepository.class)
 public class JpaDocentRepositoryTest extends AbstractTransactionalJUnit4SpringContextTests {
@@ -37,6 +40,7 @@ public class JpaDocentRepositoryTest extends AbstractTransactionalJUnit4SpringCo
 	
 	private static final String DOCENTEN = "docenten";
 	private Docent docent;
+	private Campus campus;
 	@Autowired
 	private JpaDocentRepository repository;
 	@Autowired
@@ -44,7 +48,8 @@ public class JpaDocentRepositoryTest extends AbstractTransactionalJUnit4SpringCo
 	
 	@Before
 	public void before() {
-		docent = new Docent("test", "test", BigDecimal.TEN, "test@fietsacademy.be", Geslacht.MAN);
+		campus = new Campus("testcampus", new Adres("straat", "huisnr", "postcode", "gemeente")); 
+		docent = new Docent("test", "test", BigDecimal.TEN, "test@fietsacademy.be", Geslacht.MAN, campus);
 	}
 	
 	private long idVanTestMan() {
@@ -78,12 +83,14 @@ public class JpaDocentRepositoryTest extends AbstractTransactionalJUnit4SpringCo
 	
 	@Test
 	public void create() {
+		manager.persist(this.campus);
 		int aantalDocenten = super.countRowsInTable(DOCENTEN);
-		repository.create(docent); //docent = testdocent beschreven in @Before
+		repository.create(this.docent); //docent = testdocent beschreven in @Before
 		assertEquals(aantalDocenten + 1, super.countRowsInTable(DOCENTEN));
 		assertNotEquals(0, docent.getId()); //@GeneratedValue(strategy = GenerationType.IDENTITY) heeft id van docent ingevuld
 		assertEquals(1, super.countRowsInTableWhere(DOCENTEN, "id=" + docent.getId())); //where clausule als 2de parameter
-		
+		assertEquals(campus.getId(), super.jdbcTemplate.queryForObject(
+				"select campusid from docenten where id=?", Long.class, docent.getId()).longValue());
 	}
 	
 	@Test
@@ -172,7 +179,8 @@ public class JpaDocentRepositoryTest extends AbstractTransactionalJUnit4SpringCo
 	}
 	@Test
 	public void bijnaamToevoegen() {
-		repository.create(docent);
+		manager.persist(this.campus);
+		repository.create(this.docent);
 		docent.addBijnaam("test");
 		manager.flush();
 		assertEquals("test", super.jdbcTemplate.queryForObject(
