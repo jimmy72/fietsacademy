@@ -186,5 +186,11 @@ public class JpaDocentRepositoryTest extends AbstractTransactionalJUnit4SpringCo
 		assertEquals("test", super.jdbcTemplate.queryForObject(
 				"select bijnaam from docentenbijnamen where docentid=?", String.class, docent.getId()));
 	}
+	
+	@Test
+	public void campusLazyLoaded() {
+		Docent docent = repository.read(idVanTestMan()).get(); 
+		assertEquals("test", docent.getCampus().getNaam()); 
+	}
 
 }
