@@ -191,7 +191,6 @@ public class JpaDocentRepositoryTest extends AbstractTransactionalJUnit4SpringCo
 	public void campusLazyLoaded() {
 		Docent docent = repository.read(idVanTestMan()).get(); 
 		assertEquals("test", docent.getCampus().getNaam()); 
-		//lazy
 	}
 
 }
