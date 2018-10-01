@@ -34,10 +34,11 @@ import be.vdab.fietsacademy.queryresults.IdEnEmailAdres;
 @Import(JpaDocentRepository.class)
 public class JpaDocentRepositoryTest extends AbstractTransactionalJUnit4SpringContextTests {
 
-	@Autowired
-	private JpaDocentRepository repository;
+	
 	private static final String DOCENTEN = "docenten";
 	private Docent docent;
+	@Autowired
+	private JpaDocentRepository repository;
 	@Autowired
 	private EntityManager manager;
 	

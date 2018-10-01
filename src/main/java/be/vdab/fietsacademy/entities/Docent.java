@@ -101,9 +101,9 @@ public class Docent implements Serializable{
 	}
 	
 	public boolean addBijnaam(String bijnaam) {
-		if(bijnaam.trim().isEmpty()) {
-			throw new IllegalArgumentException();
-		}
+//		if(bijnaam.trim().isEmpty()) {
+//			throw new IllegalArgumentException();
+//		}
 		return bijnamen.add(bijnaam);
 	}
 	
