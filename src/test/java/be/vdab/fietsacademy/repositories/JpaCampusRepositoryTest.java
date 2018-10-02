@@ -28,6 +28,7 @@ import be.vdab.fietsacademy.valueobjects.TelefoonNr;
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @Import(JpaCampusRepository.class)
 @Sql("/insertCampus.sql")
+@Sql("/insertDocent.sql")
 public class JpaCampusRepositoryTest extends AbstractTransactionalJUnit4SpringContextTests{
 	private final static String CAMPUSSEN = "campussen";
 	@Autowired
@@ -85,6 +86,13 @@ public class JpaCampusRepositoryTest extends AbstractTransactionalJUnit4SpringCo
 		manager.flush();
 		assertEquals("999", super.jdbcTemplate.queryForObject(
 				"select nummer from campussentelefoonnrs where campusId=?", String.class, campus.getId()));
+	}
+	
+	@Test
+	public void docentenLazyLoaded() {
+		Campus campus = repository.read(idVanTestCampus()).get(); 
+		assertEquals(2, campus.getDocenten().size()); 
+		assertEquals("testM", campus.getDocenten().stream().findFirst().get().getVoornaam());
 	}
 	
 }

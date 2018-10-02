@@ -14,6 +14,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import be.vdab.fietsacademy.valueobjects.Adres;
@@ -34,6 +36,10 @@ public class Campus implements Serializable {
 	@CollectionTable(name = "campussentelefoonnrs", joinColumns = @JoinColumn(name = "campusId")) 
 	@Column(name = "nummer")
 	private Set<TelefoonNr> telefoonNummers;
+	@OneToMany 
+	@JoinColumn(name = "campusid") 
+	@OrderBy("voornaam, familienaam") 
+	private Set<Docent> docenten;
 	
 	protected Campus() {
 	}
@@ -42,6 +48,7 @@ public class Campus implements Serializable {
 		this.naam = naam;
 		this.adres = adres;
 		this.telefoonNummers = new LinkedHashSet<>();
+		this.docenten = new LinkedHashSet<>();
 	}
 
 	public Set<TelefoonNr> getTelefoonNummers() {
@@ -78,5 +85,42 @@ public class Campus implements Serializable {
 	public void setAdres(Adres adres) {
 		this.adres = adres;
 	}
+
+	public Set<Docent> getDocenten() {
+		return Collections.unmodifiableSet(docenten);
+	}
+	
+	public boolean add(Docent docent) {
+		if (docent == null) {
+			throw new NullPointerException();
+		}
+		return docenten.add(docent);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((naam == null) ? 0 : naam.toUpperCase().hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Campus))
+			return false;
+		Campus other = (Campus) obj;
+		if (naam == null) {
+			if (other.naam != null)
+				return false;
+		} else if (!naam.equalsIgnoreCase(other.naam))
+			return false;
+		return true;
+	}
+	
 	
 }

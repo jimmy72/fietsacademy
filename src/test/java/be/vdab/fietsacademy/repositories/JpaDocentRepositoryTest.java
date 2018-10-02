@@ -49,7 +49,8 @@ public class JpaDocentRepositoryTest extends AbstractTransactionalJUnit4SpringCo
 	@Before
 	public void before() {
 		campus = new Campus("testcampus", new Adres("straat", "huisnr", "postcode", "gemeente")); 
-		docent = new Docent("test", "test", BigDecimal.TEN, "test@fietsacademy.be", Geslacht.MAN, campus);
+		docent = new Docent("test", "test", BigDecimal.TEN, "test@fietsacademy.be", Geslacht.MAN/*, campus*/);
+		campus.add(docent);
 	}
 	
 	private long idVanTestMan() {
@@ -86,11 +87,13 @@ public class JpaDocentRepositoryTest extends AbstractTransactionalJUnit4SpringCo
 		manager.persist(this.campus);
 		int aantalDocenten = super.countRowsInTable(DOCENTEN);
 		repository.create(this.docent); //docent = testdocent beschreven in @Before
+		manager.flush();
 		assertEquals(aantalDocenten + 1, super.countRowsInTable(DOCENTEN));
 		assertNotEquals(0, docent.getId()); //@GeneratedValue(strategy = GenerationType.IDENTITY) heeft id van docent ingevuld
 		assertEquals(1, super.countRowsInTableWhere(DOCENTEN, "id=" + docent.getId())); //where clausule als 2de parameter
 		assertEquals(campus.getId(), super.jdbcTemplate.queryForObject(
 				"select campusid from docenten where id=?", Long.class, docent.getId()).longValue());
+		assertTrue(campus.getDocenten().contains(docent));
 	}
 	
 	@Test
@@ -187,10 +190,10 @@ public class JpaDocentRepositoryTest extends AbstractTransactionalJUnit4SpringCo
 				"select bijnaam from docentenbijnamen where docentid=?", String.class, docent.getId()));
 	}
 	
-	@Test
-	public void campusLazyLoaded() {
-		Docent docent = repository.read(idVanTestMan()).get(); 
-		assertEquals("test", docent.getCampus().getNaam()); //lazy
-	}
+//	@Test
+//	public void campusLazyLoaded() {
+//		Docent docent = repository.read(idVanTestMan()).get(); 
+//		assertEquals("test", docent.getCampus().getNaam()); //lazy
+//	}
 
 }

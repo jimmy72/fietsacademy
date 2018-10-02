@@ -42,23 +42,23 @@ public class Docent implements Serializable{
 	@CollectionTable(name = "docentenbijnamen", joinColumns = @JoinColumn(name = "docentid") ) 
 	@Column(name = "bijnaam")
 	private Set<String> bijnamen;
-	@ManyToOne(fetch = FetchType.LAZY, optional = false) 
-	@JoinColumn(name = "campusid") 
-	private Campus campus;
+	//@ManyToOne(fetch = FetchType.LAZY, optional = false) 
+	//@JoinColumn(name = "campusid") 
+	//private Campus campus;
 	
 	protected Docent() {
 		//Je maakt de default constructor protected in plaats van public als je liever hebt dat zo weinig mogelijk
 		//classes deze constructor kunnen gebruiken
 	}
 	
-	public Docent(String voornaam, String familienaam, BigDecimal wedde, String emailAdres, Geslacht geslacht, Campus campus) {
+	public Docent(String voornaam, String familienaam, BigDecimal wedde, String emailAdres, Geslacht geslacht/*, Campus campus*/) {
 		this.voornaam = voornaam;
 		this.familienaam = familienaam;
 		this.wedde = wedde;
 		this.emailAdres = emailAdres;
 		this.geslacht = geslacht;
 		this.bijnamen = new LinkedHashSet<>();
-		this.setCampus(campus);
+		//this.setCampus(campus);
 	}
 	
 	public long getId() {
@@ -107,9 +107,9 @@ public class Docent implements Serializable{
 	}
 	
 	public boolean addBijnaam(String bijnaam) {
-//		if(bijnaam.trim().isEmpty()) {
-//			throw new IllegalArgumentException();
-//		}
+		if(bijnaam.trim().isEmpty()) {
+			throw new IllegalArgumentException();
+		}
 		return bijnamen.add(bijnaam);
 	}
 	
@@ -119,16 +119,16 @@ public class Docent implements Serializable{
 	
 	
 	
-	public Campus getCampus() {
-		return campus;
-	}
-
-	public void setCampus(Campus campus) {
-		if(campus == null) {
-			throw new NullPointerException();
-		}
-		this.campus = campus;
-	}
+//	public Campus getCampus() {
+//		return campus;
+//	}
+//
+//	public void setCampus(Campus campus) {
+//		if(campus == null) {
+//			throw new NullPointerException();
+//		}
+//		this.campus = campus;
+//	}
 
 	public void opslag(BigDecimal percentage) {
 		if(percentage.compareTo(BigDecimal.ZERO) <= 0) {
@@ -137,5 +137,24 @@ public class Docent implements Serializable{
 		BigDecimal factor = BigDecimal.ONE.add(percentage.divide(BigDecimal.valueOf(100)));
 		this.setWedde(this.getWedde().multiply(factor, new MathContext(2, RoundingMode.HALF_UP)));
 	}
+
+	@Override
+	public int hashCode() {
+		return this.emailAdres == null ? 0 : this.emailAdres.toLowerCase().hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof Docent)) {
+			return false;
+		}
+		if(this.emailAdres == null) {
+			return false;
+		}
+		
+		return this.getEmailAdres().equalsIgnoreCase(((Docent) obj).getEmailAdres());
+	}
+	
+	
 	
 }
