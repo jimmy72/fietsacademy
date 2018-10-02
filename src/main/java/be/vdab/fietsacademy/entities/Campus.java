@@ -99,7 +99,7 @@ public class Campus implements Serializable {
 		oudeCampus.docenten.remove(docent);
 		}
 		if (this != oudeCampus) {
-		docent.setCampus(this);
+			docent.setCampus(this);
 		}
 		return toegevoegd;
 	}
