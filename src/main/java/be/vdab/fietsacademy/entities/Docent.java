@@ -19,6 +19,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -45,6 +46,8 @@ public class Docent implements Serializable{
 	@ManyToOne(fetch = FetchType.LAZY, optional = false) 
 	@JoinColumn(name = "campusid") 
 	private Campus campus;
+	@ManyToMany(mappedBy = "docenten") 
+	private Set<Verantwoordelijkheid> verantwoordelijkheden = new LinkedHashSet<>();
 	
 	protected Docent() {
 		//Je maakt de default constructor protected in plaats van public als je liever hebt dat zo weinig mogelijk
@@ -136,7 +139,27 @@ public class Docent implements Serializable{
 		BigDecimal factor = BigDecimal.ONE.add(percentage.divide(BigDecimal.valueOf(100)));
 		this.setWedde(this.getWedde().multiply(factor, new MathContext(2, RoundingMode.HALF_UP)));
 	}
-
+	
+	public boolean add(Verantwoordelijkheid verantwoordelijkheid) {
+		boolean toegevoegd = verantwoordelijkheden.add(verantwoordelijkheid);
+		if ( ! verantwoordelijkheid.getDocenten().contains(this)) {
+			verantwoordelijkheid.add(this);
+		}
+		return toegevoegd;
+	}
+	
+	public boolean remove(Verantwoordelijkheid verantwoordelijkheid) {
+		boolean verwijderd = verantwoordelijkheden.remove(verantwoordelijkheid);
+		if (verantwoordelijkheid.getDocenten().contains(this)) {
+			verantwoordelijkheid.remove(this);
+		}
+		return verwijderd;
+	}
+		
+	public Set<Verantwoordelijkheid> getVerantwoordelijkheden() {
+		return Collections.unmodifiableSet(verantwoordelijkheden);
+	}
+	
 	@Override
 	public int hashCode() {
 		return this.emailAdres == null ? 0 : this.emailAdres.toLowerCase().hashCode();

@@ -2,20 +2,9 @@
 	<entity>
 		<entity-name>be.vdab.fietsacademy.entities.Docent</entity-name>
 		<entity-width>120</entity-width>
-		<entity-height>246</entity-height>
-		<entity-X-Coordinate>530</entity-X-Coordinate>
-		<entity-Y-Coordinate>11</entity-Y-Coordinate>
-		<primary-collapsed>false</primary-collapsed>
-		<relation-collapsed>false</relation-collapsed>
-		<basic-collapsed>false</basic-collapsed>
-	</entity>
-
-	<entity>
-		<entity-name>be.vdab.fietsacademy.valueobjects.Adres</entity-name>
-		<entity-width>120</entity-width>
-		<entity-height>130</entity-height>
-		<entity-X-Coordinate>1050</entity-X-Coordinate>
-		<entity-Y-Coordinate>69</entity-Y-Coordinate>
+		<entity-height>266</entity-height>
+		<entity-X-Coordinate>533</entity-X-Coordinate>
+		<entity-Y-Coordinate>127</entity-Y-Coordinate>
 		<primary-collapsed>false</primary-collapsed>
 		<relation-collapsed>false</relation-collapsed>
 		<basic-collapsed>false</basic-collapsed>
@@ -33,22 +22,22 @@
 	</entity>
 
 	<entity>
-		<entity-name>be.vdab.fietsacademy.valueobjects.TelefoonNr</entity-name>
+		<entity-name>be.vdab.fietsacademy.valueobjects.Adres</entity-name>
 		<entity-width>120</entity-width>
-		<entity-height>110</entity-height>
-		<entity-X-Coordinate>773</entity-X-Coordinate>
-		<entity-Y-Coordinate>313</entity-Y-Coordinate>
+		<entity-height>130</entity-height>
+		<entity-X-Coordinate>1050</entity-X-Coordinate>
+		<entity-Y-Coordinate>69</entity-Y-Coordinate>
 		<primary-collapsed>false</primary-collapsed>
 		<relation-collapsed>false</relation-collapsed>
 		<basic-collapsed>false</basic-collapsed>
 	</entity>
 
 	<entity>
-		<entity-name>be.vdab.fietsacademy.entities.Cursus</entity-name>
+		<entity-name>be.vdab.fietsacademy.valueobjects.TelefoonNr</entity-name>
 		<entity-width>120</entity-width>
-		<entity-height>108</entity-height>
-		<entity-X-Coordinate>50</entity-X-Coordinate>
-		<entity-Y-Coordinate>20</entity-Y-Coordinate>
+		<entity-height>110</entity-height>
+		<entity-X-Coordinate>773</entity-X-Coordinate>
+		<entity-Y-Coordinate>313</entity-Y-Coordinate>
 		<primary-collapsed>false</primary-collapsed>
 		<relation-collapsed>false</relation-collapsed>
 		<basic-collapsed>false</basic-collapsed>
@@ -66,11 +55,33 @@
 	</entity>
 
 	<entity>
+		<entity-name>be.vdab.fietsacademy.entities.Cursus</entity-name>
+		<entity-width>120</entity-width>
+		<entity-height>108</entity-height>
+		<entity-X-Coordinate>50</entity-X-Coordinate>
+		<entity-Y-Coordinate>20</entity-Y-Coordinate>
+		<primary-collapsed>false</primary-collapsed>
+		<relation-collapsed>false</relation-collapsed>
+		<basic-collapsed>false</basic-collapsed>
+	</entity>
+
+	<entity>
 		<entity-name>be.vdab.fietsacademy.entities.IndividueleCursus</entity-name>
 		<entity-width>141</entity-width>
 		<entity-height>70</entity-height>
 		<entity-X-Coordinate>29</entity-X-Coordinate>
 		<entity-Y-Coordinate>240</entity-Y-Coordinate>
+		<primary-collapsed>false</primary-collapsed>
+		<relation-collapsed>false</relation-collapsed>
+		<basic-collapsed>false</basic-collapsed>
+	</entity>
+
+	<entity>
+		<entity-name>be.vdab.fietsacademy.entities.Verantwoordelijkheid</entity-name>
+		<entity-width>164</entity-width>
+		<entity-height>146</entity-height>
+		<entity-X-Coordinate>187</entity-X-Coordinate>
+		<entity-Y-Coordinate>392</entity-Y-Coordinate>
 		<primary-collapsed>false</primary-collapsed>
 		<relation-collapsed>false</relation-collapsed>
 		<basic-collapsed>false</basic-collapsed>
