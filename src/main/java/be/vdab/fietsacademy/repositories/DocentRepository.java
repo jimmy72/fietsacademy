@@ -10,6 +10,7 @@ import be.vdab.fietsacademy.queryresults.IdEnEmailAdres;
 
 public interface DocentRepository {
 	public abstract Optional<Docent> read(long id);
+	public abstract Optional<Docent> readWithLock(long id);
 	public abstract void create(Docent docent);
 	public abstract void delete(long id);
 	public abstract List<Docent> findAll();

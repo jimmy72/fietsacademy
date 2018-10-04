@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 
 import org.springframework.stereotype.Repository;
 
@@ -25,7 +26,12 @@ class JpaDocentRepository implements DocentRepository {
 	public Optional<Docent> read(long id) {
 		return Optional.ofNullable(manager.find(Docent.class, id));
 	}
-
+	
+	@Override
+	public Optional<Docent> readWithLock(long id) {
+		return Optional.ofNullable(manager.find(Docent.class, id, LockModeType.PESSIMISTIC_WRITE));
+	}
+	
 	@Override
 	public void create(Docent docent) {
 		manager.persist(docent);
