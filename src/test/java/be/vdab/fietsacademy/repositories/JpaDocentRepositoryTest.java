@@ -121,13 +121,15 @@ public class JpaDocentRepositoryTest extends AbstractTransactionalJUnit4SpringCo
 	
 	@Test
 	public void findByWeddeBetween() {
-		BigDecimal duizend = BigDecimal.valueOf(1_000);
-		BigDecimal tweeduizend=BigDecimal.valueOf(2_000);
+		BigDecimal duizend = BigDecimal.valueOf(2_250);
+		BigDecimal tweeduizend=BigDecimal.valueOf(2_300);
 		List<Docent> docenten = repository.findByWeddeBetween(duizend, tweeduizend);
-		long aantalDocenten = super.countRowsInTableWhere(DOCENTEN, "wedde between 1000 and 2000");
+		manager.clear();
+		long aantalDocenten = super.countRowsInTableWhere(DOCENTEN, "wedde between 2250 and 2300");
 		assertEquals(aantalDocenten, docenten.size());
 		docenten.forEach(docent -> {
 			assertTrue(docent.getWedde().compareTo(duizend) >= 0);
+			System.out.println(docent.getFamilienaam() + ':' + docent.getWedde() + ' ' + docent.getCampus().getNaam());
 			assertTrue(docent.getWedde().compareTo(tweeduizend) <= 0);
 		});
 	}
